@@ -1,8 +1,8 @@
 module github.com/mrjoshuak/go-blosc
 
-go 1.25.5
+go 1.23
 
 require (
-	github.com/klauspost/compress v1.18.2 // indirect
-	github.com/pierrec/lz4/v4 v4.1.23 // indirect
+	github.com/klauspost/compress v1.18.2
+	github.com/pierrec/lz4/v4 v4.1.23
 )
