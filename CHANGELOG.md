@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-01-16
+
+### Fixed
+
+- Fixed deprecated `rand.Read` usage in test files (replaced with `crypto/rand.Read`)
+- Fixed ineffectual variable assignments in codec.go
+- Fixed Windows CI compatibility (PowerShell argument parsing)
+- Updated CI to test Go 1.22 and 1.23 only
+
 ## [1.0.0] - 2026-01-16
 
 ### Added
@@ -34,4 +43,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - github.com/pierrec/lz4/v4 - LZ4/LZ4HC codec
 - github.com/klauspost/compress - ZSTD, ZLIB, Snappy codecs
 
+[1.0.1]: https://github.com/mrjoshuak/go-blosc/releases/tag/v1.0.1
 [1.0.0]: https://github.com/mrjoshuak/go-blosc/releases/tag/v1.0.0
