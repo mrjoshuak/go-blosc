@@ -93,7 +93,7 @@ func (c *lz4hcCodec) Name() string { return "lz4hc" }
 
 func (c *lz4hcCodec) Compress(data []byte, level int) ([]byte, error) {
 	// Map 1-9 to LZ4 compression levels
-	lz4Level := lz4.Fast
+	var lz4Level lz4.CompressionLevel
 	switch {
 	case level <= 3:
 		lz4Level = lz4.Level1
@@ -199,7 +199,7 @@ var zstdDecoder = func() *zstd.Decoder {
 
 func (c *zstdCodec) Compress(data []byte, level int) ([]byte, error) {
 	// Map 1-9 to encoder index (0-3)
-	idx := 1 // Default
+	var idx int
 	switch {
 	case level <= 2:
 		idx = 0

@@ -2,6 +2,7 @@ package blosc
 
 import (
 	"bytes"
+	cryptorand "crypto/rand"
 	"encoding/binary"
 	"errors"
 	"math/rand"
@@ -386,7 +387,7 @@ func TestZLIBAllLevels(t *testing.T) {
 func TestLargeRandomDataCompression(t *testing.T) {
 	// Large random data to ensure we hit incompressible paths
 	data := make([]byte, 100000)
-	rand.Read(data)
+	_, _ = cryptorand.Read(data)
 
 	for _, codecID := range []Codec{LZ4, LZ4HC} {
 		t.Run(codecID.String(), func(t *testing.T) {
@@ -412,7 +413,7 @@ func TestLargeRandomDataCompression(t *testing.T) {
 func TestVerySmallDataLZ4(t *testing.T) {
 	// Very small random data - LZ4 can't compress this
 	data := make([]byte, 10)
-	rand.Read(data)
+	_, _ = cryptorand.Read(data)
 
 	codec, _ := GetCodec(LZ4)
 	result, err := codec.Compress(data, 1)
@@ -432,7 +433,7 @@ func TestVerySmallDataLZ4(t *testing.T) {
 func TestVerySmallDataLZ4HC(t *testing.T) {
 	// Very small random data - LZ4HC can't compress this
 	data := make([]byte, 10)
-	rand.Read(data)
+	_, _ = cryptorand.Read(data)
 
 	codec, _ := GetCodec(LZ4HC)
 	result, err := codec.Compress(data, 1)

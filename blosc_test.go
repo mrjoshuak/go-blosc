@@ -2,6 +2,7 @@ package blosc
 
 import (
 	"bytes"
+	cryptorand "crypto/rand"
 	"encoding/binary"
 	"errors"
 	"math"
@@ -242,7 +243,7 @@ func TestInvalidVersion(t *testing.T) {
 func TestMemcpyPath(t *testing.T) {
 	// Random data that's hard to compress
 	data := make([]byte, 100)
-	rand.Read(data)
+	_, _ = cryptorand.Read(data)
 
 	compressed, err := Compress(data, LZ4, 1, NoShuffle, 1)
 	if err != nil {
@@ -559,7 +560,7 @@ func TestGetDecompressedSizeError(t *testing.T) {
 func TestIncompressibleData(t *testing.T) {
 	// Generate random data that's hard to compress
 	data := make([]byte, 1000)
-	rand.Read(data)
+	_, _ = cryptorand.Read(data)
 
 	for _, codec := range []Codec{LZ4, LZ4HC, ZSTD, ZLIB, Snappy} {
 		t.Run(codec.String(), func(t *testing.T) {
@@ -656,7 +657,7 @@ func TestCompressWithOptionsTypeSizeClamping(t *testing.T) {
 func TestMemcpyDecompression(t *testing.T) {
 	// Test memcpy path directly by compressing random data
 	data := make([]byte, 100)
-	rand.Read(data)
+	_, _ = cryptorand.Read(data)
 
 	// Compress with very low effort to trigger memcpy
 	compressed, err := Compress(data, LZ4, 1, NoShuffle, 1)
