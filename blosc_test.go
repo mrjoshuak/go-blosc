@@ -680,6 +680,32 @@ func TestMemcpyDecompression(t *testing.T) {
 	}
 }
 
+func TestMemcpyDecompressionWithShuffle(t *testing.T) {
+	// Small slice where compression doesn't help
+	original := []byte{1, 2, 3, 4, 1, 2, 3, 4}
+	
+	// Compress with Shuffle1 (forces Memcpy because data is small)
+	compressed, err := Compress(original, LZ4, 5, Shuffle1, 4)
+	if err != nil {
+		t.Fatalf("compress failed: %v", err)
+	}
+	
+	header, _ := ParseHeader(compressed)
+	if !header.IsMemcpy() {
+		t.Fatal("expected memcpy path to be used")
+	}
+
+	// Decompress
+	decompressed, err := DecompressWithSize(compressed, 4)
+	if err != nil {
+		t.Fatalf("decompress failed: %v", err)
+	}
+	
+	if !bytes.Equal(original, decompressed) {
+		t.Errorf("data mismatch after decompressing memcpy with shuffle")
+	}
+}
+
 func TestDecompressWithTypeSizeOverride(t *testing.T) {
 	// Create float32 data
 	floats := make([]float32, 250)

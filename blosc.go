@@ -418,11 +418,13 @@ func decompressBackend(data []byte, typeSize int) ([]byte, error) {
 		typeSize = int(header.TypeSize)
 	}
 
-	// Apply unshuffle
-	if header.HasBitShuffle() && typeSize > 1 {
-		decompressed = bitUnshuffle(decompressed, typeSize)
-	} else if header.HasShuffle() && typeSize > 1 {
-		decompressed = unshuffleBytes(decompressed, typeSize)
+	// Apply unshuffle ONLY if not Memcpy
+	if !header.IsMemcpy() {
+		if header.HasBitShuffle() && typeSize > 1 {
+			decompressed = bitUnshuffle(decompressed, typeSize)
+		} else if header.HasShuffle() && typeSize > 1 {
+			decompressed = unshuffleBytes(decompressed, typeSize)
+		}
 	}
 
 	// Verify size
